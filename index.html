@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اطلاعات پرداخت</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px 16px;
+  font-family: Tahoma, Arial, sans-serif;
+  background: #f3f5f9;
+  color: #182230;
+}
+.card {
+  max-width: 420px;
+  margin: 35px auto;
+  padding: 26px 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px #14213d12;
+}
+h2 { text-align: center; margin-top: 0; }
+.sub { text-align: center; color: #687386; font-size: 13px; }
+.item {
+  margin-top: 22px;
+  padding: 15px;
+  background: #f6f8fb;
+  border-radius: 12px;
+}
+.label { font-size: 12px; color: #687386; }
+.value {
+  direction: ltr;
+  text-align: center;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 12px 0;
+  user-select: all;
+}
+button {
+  width: 100%;
+  border: 0;
+  padding: 12px;
+  border-radius: 9px;
+  background: #172f55;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+.note {
+  text-align: center;
+  color: #687386;
+  font-size: 12px;
+  margin-top: 22px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>اطلاعات پرداخت</h2>
+  <p class="sub">برای پرداخت، از اطلاعات زیر استفاده کنید.</p>
+
+  <div class="item">
+    <div class="label">نام صاحب حساب</div>
+    <div class="value" dir="rtl" id="owner">نام و نام خانوادگی</div>
+    <button onclick="copyText('owner',this)">کپی نام</button>
+  </div>
+
+  <div class="item">
+    <div class="label">شماره کارت</div>
+    <div class="value" id="card">0000000000000000</div>
+    <button onclick="copyText('card',this)">کپی شماره کارت</button>
+  </div>
+
+  <div class="item">
+    <div class="label">شماره شبا</div>
+    <div class="value" id="iban">IR000000000000000000000000</div>
+    <button onclick="copyText('iban',this)">کپی شماره شبا</button>
+  </div>
+
+  <p class="note">لطفاً پیش از پرداخت، نام صاحب حساب را بررسی کنید.</p>
+</div>
+
+<script>
+async function copyText(id, btn) {
+  const value = document.getElementById(id).textContent.trim();
+  try {
+    await navigator.clipboard.writeText(value);
+    btn.textContent = "کپی شد ✓";
+  } catch (e) {
+    const area = document.createElement("textarea");
+    area.value = value;
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    area.remove();
+    btn.textContent = ok ? "کپی شد ✓" : "متن را انتخاب و کپی کنید";
+  }
+  setTimeout(() => {
+    btn.textContent = id === "owner" ? "کپی نام" :
+      id === "card" ? "کپی شماره کارت" : "کپی شماره شبا";
+  }, 2000);
+}
+</script>
+</body>
+</html>
